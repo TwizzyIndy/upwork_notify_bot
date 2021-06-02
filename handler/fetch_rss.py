@@ -1,6 +1,8 @@
 from telegram import Update
 from telegram.ext import CallbackContext
 import logging
+
+from telegram.utils.helpers import escape_markdown
 from util import rss
 
 from datetime import time, datetime
@@ -8,6 +10,7 @@ from database import schema
 from database.engine import session
 from sqlalchemy.sql.expression import text
 
+from markdownify import markdownify as md
 
 # Enable logging
 logging.basicConfig(
@@ -22,12 +25,20 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
     job = context.job
     # context.bot.send_message(job.context, text='Beep!')
     q = session.query(schema.Feed)
+
     for item in q:
         curr = rss.RssFeed(item.URL)
         for feed in curr.items:
-            messageContent = "Title: " + feed.title + "\nDescription: " + feed.description + "\n" + feed.link
-            # escapedMessage = messageContent.replace("_", "\\_").replace("*", "\\*").replace("[", "\\[").replace("`", "\\`").replace('-', '\\').replace('>', '\\').replace('.', '\\').replace('(', '\\').replace(')', '\\').replace('(', '\\').replace('=', '\\').replace('#', '\\')
-            messageContent = messageContent.replace('<br', '').replace('/>', '')
-            context.bot.send_message(job.context, text=messageContent) #, parse_mode='MarkdownV2')
+            
+            description = md(feed.description).replace('**', '*')
+            messageContent = "*Title* : " + escape_markdown( feed.title )+ "\n*Description* : " + description
+
+            try:
+                context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
+            except Exception as e:
+                print(e)
+                messageContent = "*Title* : " + escape_markdown( feed.title )+ "\n*Description* : " + escape_markdown( description )
+                context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
+
 
     
