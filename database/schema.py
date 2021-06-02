@@ -31,3 +31,10 @@ class User(Base):
     FeedTime = Column(Time, nullable=False)
 
     subscriptions = relationship("PSubscription", order_by=PSubscription.FID)
+
+class News(Base):
+    __tablename__ = 'news'
+    UID = Column(Integer, primary_key=True, autoincrement=True, unique=True)
+    title = Column(String, nullable=False)
+    link = Column(String, nullable=False)
+    pubdate = Column(Date, nullable=False)
