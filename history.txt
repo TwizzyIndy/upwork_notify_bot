@@ -1,0 +1,1 @@
+1108 heroku logs --tail 1109 heroku ps 1110 git add . 1111 git commit -am "polling updated" 1112 git push heroku master 1113 heroku ps 1114 heroku logs --tail 1115 heroku ps:stop web 1116 heroku ps:scale web=1 1117 heroku ps 1118 ls 1119 rm file.db 1120 git add . 1121 git commit -m "db deleted" 1122 git push heroku master 1123 history
