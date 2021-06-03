@@ -52,7 +52,7 @@ def start_timed_rss(update: Update, context: CallbackContext):
     chat_id = update.message.chat_id
     
     try:
-        duration = 5
+        duration = 1
         if duration < 0:
             update.message.reply_text('Sorry duration must be greater than zero')
             return
