@@ -18,7 +18,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-PORT = int(os.environ.get('PORT', 5000))
+PORT = int(os.environ.get('PORT', 80))
 TOKEN = "1616195345:AAFKDvgvqHp-CtByuprvstQvlkom6md_OWY"
 
 def main() -> None:
