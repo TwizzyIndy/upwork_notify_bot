@@ -37,6 +37,14 @@ def add_rss(update: Update, context: CallbackContext) -> None:
                 session.commit()
                 FID = newFeed.FID
 
+                newSubscription = schema.PSubscription(
+                    UID=update.effective_user.id,
+                    FID=FID,
+                    LatestCheck=datetime.now()
+                )
+                session.add(newSubscription)
+                session.commit()
+
                 start_timed_rss(update=update, context=context)
 
             except Exception as e:
