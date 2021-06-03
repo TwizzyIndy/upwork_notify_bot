@@ -3,6 +3,8 @@ from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
+# https://github.com/enzo-pellegrini/dueGiorniDiSub
+
 class Feed(Base):
     __tablename__ = 'feeds'
     FID = Column(Integer, Sequence('feed_id_seq'), primary_key=True)
@@ -34,7 +36,12 @@ class User(Base):
 
 class News(Base):
     __tablename__ = 'news'
-    UID = Column(Integer, primary_key=True, autoincrement=True, unique=True)
+    news_id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
     title = Column(String, nullable=False)
     link = Column(String, nullable=False)
     pubdate = Column(Date, nullable=False)
+    # job_name = Column(String, nullable=False)
+    UID = Column(Integer, ForeignKey('users.UID'), nullable=False)
+    FID = Column(Integer, ForeignKey('feeds.FID'), nullable=False)
+
+    feed = relationship("Feed", order_by=Feed.FID)
