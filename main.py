@@ -34,10 +34,8 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("unset", unset))
     dispatcher.add_handler(CommandHandler("add", add_rss))
     
-    updater.start_webhook(listen="0.0.0.0",
-                          port=int(PORT),
-                          url_path=TOKEN)
-    updater.bot.setWebhook('https://upwork-notifier-bot.herokuapp.com/' + TOKEN)
+    # Start the Bot
+    updater.start_polling()
 
     updater.idle()
 
