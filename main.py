@@ -8,6 +8,7 @@ from handler.set_timer import set_timer
 from handler.fetch_rss import fetch_rss_feeds
 from handler.unset_timer import unset
 from handler.add_rss import add_rss
+import os
 
 # Enable logging
 logging.basicConfig(
@@ -17,10 +18,13 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
+PORT = int(os.environ.get('PORT', 5000))
+TOKEN = "1616195345:AAFKDvgvqHp-CtByuprvstQvlkom6md_OWY"
+
 def main() -> None:
     """Run bot"""
 
-    updater = Updater("1616195345:AAFKDvgvqHp-CtByuprvstQvlkom6md_OWY")
+    updater = Updater(TOKEN, use_context=True)
 
     dispatcher = updater.dispatcher
 
@@ -30,7 +34,10 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("unset", unset))
     dispatcher.add_handler(CommandHandler("add", add_rss))
     
-    updater.start_polling()
+    updater.start_webhook(listen="0.0.0.0",
+                          port=int(PORT),
+                          url_path=TOKEN)
+    updater.bot.setWebhook('https://upwork-notifier-bot.herokuapp.com/' + TOKEN)
 
     updater.idle()
 
