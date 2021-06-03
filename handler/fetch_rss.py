@@ -30,9 +30,9 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
         curr = rss.RssFeed(item.URL)
         for feed in curr.items:
             
-            if session.query(schema.News.title).filter_by(title=feed.title).scalar() is None:
+            if session.query(schema.News.title).filter_by(title=feed.title, UID=job.name, FID=item.FID).scalar() is None:
                 
-                save_news_to_db(feed.title, feed.link, feed.pub_date)
+                save_news_to_db(feed.title, feed.link, feed.pub_date, job_name=job.name, fid=item.FID)
                 description = md(feed.description).replace('**', '*')
                 messageContent = "*Title* : " + escape_markdown( feed.title )+ "\n*Description* : " + description
 
@@ -44,9 +44,9 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
                     context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
 
 
-def save_news_to_db(title, link, pubdate):
+def save_news_to_db(title, link, pubdate, job_name, fid):
 
-    newRssItem = schema.News(title=title, link=link, pubdate=pubdate)
+    newRssItem = schema.News(title=title, link=link, pubdate=pubdate, UID=job_name, FID=fid)
     session.add(newRssItem)
     session.commit()
     return
