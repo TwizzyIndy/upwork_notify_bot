@@ -25,7 +25,7 @@ TOKEN = "1616195345:AAFKDvgvqHp-CtByuprvstQvlkom6md_OWY"
 def main() -> None:
     """Run bot"""
 
-    updater = Updater(TOKEN, use_context=True)
+    updater = Updater(TOKEN)#, use_context=True)
 
     dispatcher = updater.dispatcher
 
