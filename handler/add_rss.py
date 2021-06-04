@@ -31,7 +31,8 @@ def add_rss(update: Update, context: CallbackContext) -> None:
                 newFeed = schema.Feed(
                     Title=feedParsed.title,
                     URL=context.args[0],
-                    Type="rss"
+                    Type="rss",
+                    UID=update.effective_user.id
                 )
                 session.add(newFeed)
                 session.commit()
