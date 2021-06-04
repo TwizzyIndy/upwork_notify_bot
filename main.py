@@ -8,6 +8,7 @@ from handler.set_timer import set_timer
 from handler.fetch_rss import fetch_rss_feeds
 from handler.unset_timer import unset
 from handler.add_rss import add_rss
+from handler.list_feeds import list_feeds
 import os
 
 # Enable logging
@@ -18,7 +19,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-PORT = int(os.environ.get('PORT'))
+# PORT = os.environ.get('PORT')
 TOKEN = "1616195345:AAFKDvgvqHp-CtByuprvstQvlkom6md_OWY"
 
 def main() -> None:
@@ -33,6 +34,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("set", set_timer))
     dispatcher.add_handler(CommandHandler("unset", unset))
     dispatcher.add_handler(CommandHandler("add", add_rss))
+    dispatcher.add_handler(CommandHandler("list", list_feeds))
     
     # Start the Bot
     updater.start_polling()
