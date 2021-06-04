@@ -28,8 +28,11 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
     """Send the alarm message."""
     job = context.job
     # context.bot.send_message(job.context, text='Beep!')
-    q = session.query(schema.Feed)
+    q = session.query(schema.Feed).filter_by(UID=job.name)
 
+    if q.count() == 0:
+        context.bot.send_message(job.context, text="Please /add rss link first.")
+    
     for item in q:
         curr = rss.RssFeed(item.URL)
         for feed in curr.items:
