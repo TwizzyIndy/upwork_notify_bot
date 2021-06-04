@@ -11,6 +11,7 @@ class Feed(Base):
     Title = Column(String, nullable=False)
     URL = Column(String, unique=True, nullable=False)
     Type = Column(Enum("rss", "podcast"), nullable=False)
+    UID = Column(Integer, ForeignKey('users.UID'), nullable=False)
 
 
 class PSubscription(Base):
