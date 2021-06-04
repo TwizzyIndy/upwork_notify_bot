@@ -1,3 +1,4 @@
+from sqlalchemy.orm.session import sessionmaker
 from telegram import Update
 from telegram.ext import CallbackContext
 import logging
@@ -7,7 +8,8 @@ from util import rss
 
 from datetime import time, datetime
 from database import schema
-from database.engine import session
+from database.engine import engine
+from sqlalchemy.orm import scoped_session
 from sqlalchemy.sql.expression import text
 
 from markdownify import markdownify as md
@@ -19,6 +21,8 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+session = scoped_session( sessionmaker(bind=engine) )
 
 def fetch_rss_feeds(context: CallbackContext) -> None:
     """Send the alarm message."""
