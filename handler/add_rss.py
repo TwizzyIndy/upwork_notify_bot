@@ -3,7 +3,10 @@ from telegram import Update
 from telegram.ext import CallbackContext
 from datetime import time, datetime
 from database import schema
-from database.engine import session
+from database.engine import engine
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm.session import sessionmaker
+
 from util import rss
 
 from .fetch_rss import fetch_rss_feeds
@@ -17,6 +20,8 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+session = scoped_session( sessionmaker(bind=engine) )
 
 def add_rss(update: Update, context: CallbackContext) -> None:
 
