@@ -50,6 +50,7 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
                     print(e)
                     messageContent = "*Title* : " + escape_markdown( feed.title )+ "\n*Description* : " + escape_markdown( description )
                     context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
+                    continue
 
 
 def save_news_to_db(title, link, pubdate, job_name, fid):
