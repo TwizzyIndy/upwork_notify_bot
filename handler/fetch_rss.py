@@ -32,6 +32,7 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
 
     if q.count() == 0:
         context.bot.send_message(job.context, text="Please /add rss link first.")
+        return None
     
     for item in q:
         curr = rss.RssFeed(item.URL)
