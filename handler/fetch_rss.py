@@ -42,13 +42,13 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
                 
                 save_news_to_db(feed.title, feed.link, feed.pub_date, job_name=job.name, fid=item.FID)
                 description = md(feed.description).replace('**', '*')
-                messageContent = "*Title* : " + escape_markdown( feed.title )+ "\n*Description* : " + description
+                messageContent = "*Title* : " + escape_markdown( feed.title.replace(' - Upwork','') )+ "\n*Description* : " + description
 
                 try:
                     context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
                 except Exception as e:
                     print(e)
-                    messageContent = "*Title* : " + escape_markdown( feed.title )+ "\n*Description* : " + escape_markdown( description )
+                    messageContent = "*Title* : " + escape_markdown( feed.title.replace(' - Upwork','') )+ "\n*Description* : " + escape_markdown( description )
                     context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
                     continue
 
