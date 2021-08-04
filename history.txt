@@ -14,3 +14,10 @@
 1121 git commit -m "db deleted"
 1122 git push heroku master
 1123 history
+
+# Re-attach screen
+screen -r upwork_bot
+
+# Exit screen
+CTRL+A, then D
+
