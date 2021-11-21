@@ -20,7 +20,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # PORT = os.environ.get('PORT')
-TOKEN = "1616195345:AAFKDvgvqHp-CtByuprvstQvlkom6md_OWY"
+TOKEN = "PLEASE_USE_UNIQUE_TOKEN_HERE"
 
 def main() -> None:
     """Run bot"""
