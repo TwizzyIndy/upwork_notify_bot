@@ -8,6 +8,7 @@ from handler.set_timer import set_timer
 from handler.fetch_rss import fetch_rss_feeds
 from handler.unset_timer import unset
 from handler.add_rss import add_rss
+from handler.remove_rss import remove_rss
 from handler.list_feeds import list_feeds
 import os
 
@@ -34,6 +35,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("set", set_timer))
     dispatcher.add_handler(CommandHandler("unset", unset))
     dispatcher.add_handler(CommandHandler("add", add_rss))
+    dispatcher.add_handler(CommandHandler("remove", remove_rss))
     dispatcher.add_handler(CommandHandler("list", list_feeds))
     
     # Start the Bot
