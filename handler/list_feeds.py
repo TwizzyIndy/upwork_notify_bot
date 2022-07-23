@@ -15,7 +15,7 @@ def list_feeds(update: Update, context: CallbackContext) -> None:
 
     if q is not None:
         for item in q:
-            message_content += str(n+1) + ". " + item.Title + "\n"
+            message_content += str(item.FID) + ". " + item.Title + "\n"
             n += 1
         
         context.bot.send_message(chat_id=update.effective_chat.id, text=message_content)
