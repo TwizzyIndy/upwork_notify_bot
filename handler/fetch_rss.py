@@ -30,27 +30,30 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
     # context.bot.send_message(job.context, text='Beep!')
     q = session.query(schema.Feed).filter_by(UID=job.name)
 
-    if q.count() == 0:
-        context.bot.send_message(job.context, text="Please /add rss link first.")
-        return None
-    
-    for item in q:
-        curr = rss.RssFeed(item.URL)
-        for feed in curr.items:
-            
-            if session.query(schema.News.title).filter_by(title=feed.title, UID=job.name, FID=item.FID).scalar() is None:
+    try:
+        if q.count() == 0:
+            context.bot.send_message(job.context, text="Please /add rss link first.")
+            return None
+        
+        for item in q:
+            curr = rss.RssFeed(item.URL)
+            for feed in curr.items:
                 
-                save_news_to_db(feed.title, feed.link, feed.pub_date, job_name=job.name, fid=item.FID)
-                description = md(feed.description).replace('**', '*')
-                messageContent = "*Title* : " + escape_markdown( feed.title.replace(' - Upwork','') )+ "\n*Description* : " + description
+                if session.query(schema.News.title).filter_by(title=feed.title, UID=job.name, FID=item.FID).scalar() is None:
+                    
+                    save_news_to_db(feed.title, feed.link, feed.pub_date, job_name=job.name, fid=item.FID)
+                    description = md(feed.description).replace('**', '*')
+                    messageContent = "*Title* : " + escape_markdown( feed.title.replace(' - Upwork','') )+ "\n*Description* : " + description
 
-                try:
-                    context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
-                except Exception as e:
-                    print(e)
-                    messageContent = "*Title* : " + escape_markdown( feed.title.replace(' - Upwork','') )+ "\n*Description* : " + escape_markdown( description )
-                    context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
-                    continue
+                    try:
+                        context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
+                    except Exception as e:
+                        print(e)
+                        messageContent = "*Title* : " + escape_markdown( feed.title.replace(' - Upwork','') )+ "\n*Description* : " + escape_markdown( description )
+                        context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
+                        continue
+    except Exception as e:
+        print(str(e))
 
 
 def save_news_to_db(title, link, pubdate, job_name, fid):
