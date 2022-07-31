@@ -41,6 +41,9 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
                 
                 if session.query(schema.News.title).filter_by(title=feed.title, UID=job.name, FID=item.FID).scalar() is None:
                     
+                    if feed.link == None:
+                        continue
+                    
                     save_news_to_db(feed.title, feed.link, feed.pub_date, job_name=job.name, fid=item.FID)
                     description = md(feed.description).replace('**', '*')
                     messageContent = "*Title* : " + escape_markdown( feed.title.replace(' - Upwork','') )+ "\n*Description* : " + description
@@ -53,7 +56,10 @@ def fetch_rss_feeds(context: CallbackContext) -> None:
                         context.bot.send_message(job.context, text=messageContent, parse_mode='Markdown')
                         continue
     except Exception as e:
-        print(str(e))
+        print("fetch_rss_feeds : job.name" + str(job.name) )
+        print("fetch_rss_feeds : " + str(e))
+        
+        session.rollback()
 
 
 def save_news_to_db(title, link, pubdate, job_name, fid):
